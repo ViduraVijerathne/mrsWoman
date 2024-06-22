@@ -24,14 +24,20 @@ if (!isset($_POST["productName"])) {
 } else if (count($_FILES["productImages"]["size"]) > 3) {
     $obj->message = " product images is too many" . count($_FILES["productImages"]);
     $obj->statusCode = $ERROR;
-} else {
+}else if(!isset($_POST['category'])){
+    $obj->message = "Product category is not selected";
+    $obj->statusCode = $ERROR;
+}
+else {
 
 //    ADD PRODUCT
     $db = new \database\Database();
-    $AddProductQuery = 'INSERT INTO product (product_name, product_description) VALUES (:productName, :productDesc);';
+    $AddProductQuery = 'INSERT INTO product (product_name, product_description,category_id) 
+                        VALUES (:productName, :productDesc,:catID);';
     $params = [
         ':productName' => $_POST["productName"],
-        ':productDesc' => $_POST["productDescription"]
+        ':productDesc' => $_POST["productDescription"],
+        ':catID' => $_POST["category"]
     ];
 
     $productID = $db->insertAndGetId($AddProductQuery, $params);

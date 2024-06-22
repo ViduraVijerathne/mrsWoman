@@ -99,7 +99,7 @@ ob_start(); // Start output buffering
                 </div>
                 <div class="col-2 d-flex flex-column justify-content-center  ">
                     <div class="row m-1">
-                        <div class="btn btn-dark">
+                        <div class="btn btn-dark" onclick="updateProduct('<?php echo  $product['product_id'] ?>')">
                             Update
                         </div>
                     </div>

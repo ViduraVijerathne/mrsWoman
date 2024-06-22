@@ -122,13 +122,13 @@ const adminPanelList = {
 const showErrorToast = (title, body) => {
     document.getElementById("ErrorToast_header").innerText = title;
     document.getElementById('ErrorToast_body').innerText = body;
-    const  toast = new bootstrap.Toast(document.getElementById('ErrorToast'));
+    const toast = new bootstrap.Toast(document.getElementById('ErrorToast'));
     toast.show();
 }
 const showSuccessToast = (title, body) => {
     document.getElementById("Toast_header").innerText = title;
     document.getElementById('Toast_body').innerText = body;
-    const  toast = new bootstrap.Toast(document.getElementById('Toast'));
+    const toast = new bootstrap.Toast(document.getElementById('Toast'));
     toast.show();
 }
 const showAdminPanelLoadingSpinner = () => {
@@ -146,17 +146,20 @@ const loadAdminPages = (id) => {
             if (responseObj.statusCode === 1) {
 
                 document.getElementById("adminCenter").innerHTML = responseObj.body;
+
+                if(id == 0){
+                    loadDashboardChart()
+                }
             } else {
                 showErrorToast(adminPanelList[id].name + " ERROR", responseObj.message);
             }
 
-            if(id == 7){
+            if (id == 7) {
                 location.reload();
             }
         }
     }
     request.send()
-
 
 
 }
@@ -366,14 +369,15 @@ const addNewProductStock = () => {
     const price = document.getElementById("addProductPrice").value
     const delivery = document.getElementById("addProductDeliveryFree").value
     const id = Math.random()
-    console.log(size+":"+sizeID)
+    console.log(size + ":" + sizeID)
     console.log(document.getElementById("AddProductSize").options);
 
 //     validation
     if (size === "" || colorCode === "" || colorName === "" || qty === "" || price === "" || delivery === "") {
         showErrorToast("OOPS!", "Please fill all the fields")
         return;
-    }if(sizeID == 0){
+    }
+    if (sizeID == 0) {
         showErrorToast("OOPS!", "Please select a size")
         return;
     }
@@ -408,7 +412,7 @@ const adminAddNewProduct = () => {
     const productName = document.getElementById("productName").value;
     const productDescription = document.getElementById("productDescription").value;
     const productImages = document.getElementById("productImages_uploader").files;
-
+    const category = document.getElementById("catergoryOption").value;
 
 //     validate product name is not empty string and product name max length is 100
     if (productName === "" || productName.length > 100) {
@@ -439,6 +443,7 @@ const adminAddNewProduct = () => {
     const form = new FormData();
     form.append("productName", productName);
     form.append("productDescription", productDescription);
+    form.append("category", category);
 
     for (let i = 0; i < productImages.length; i++) {
         // alert(i);
@@ -515,13 +520,13 @@ const activateDeactivateProduct = (id, acStatus) => {
 
 
 const selectedProductSizeBtnData = {
-    "productID":"sizeBtnID",
+    "productID": "sizeBtnID",
 }
 
 const SELECTEDPRODUCTSIZECOLOR = {
-    "productID":{
-        "sizeID":"id",
-        "colorID":"id",
+    "productID": {
+        "sizeID": "id",
+        "colorID": "id",
     }
 }
 const SelecteProductChangeSize = (productID, sizeID) => {
@@ -532,13 +537,13 @@ const SelecteProductChangeSize = (productID, sizeID) => {
             if (responseObject.statusCode === 1) {
 
                 //change btn color
-                const SizeBtnID = "size_"+productID+"_"+sizeID;
+                const SizeBtnID = "size_" + productID + "_" + sizeID;
                 const activeBtn = document.getElementById(SizeBtnID);
                 activeBtn.classList.add('btn-dark');
                 activeBtn.classList.remove('btn-outline-dark');
 
                 const beforeID = selectedProductSizeBtnData[productID];
-                if(beforeID != null){
+                if (beforeID != null) {
                     const beforeSizeBtn = document.getElementById(beforeID);
                     beforeSizeBtn.classList.remove('btn-dark');
                     beforeSizeBtn.classList.add('btn-outline-dark');
@@ -549,16 +554,16 @@ const SelecteProductChangeSize = (productID, sizeID) => {
                 const PRODUCTSIZEANDCOLOR = {};
                 PRODUCTSIZEANDCOLOR['size'] = sizeID;
 
-            //     render colors
+                //     render colors
 
                 const stocks = responseObject.stocks;
-                const  colorContainer = document.getElementById('productColorButtonGroup_'+productID);
+                const colorContainer = document.getElementById('productColorButtonGroup_' + productID);
                 colorContainer.innerHTML = "";
                 for (let i = 0; i < stocks.length; i++) {
                     const stock = stocks[i];
                     const colorDiv = document.createElement("div");
-                    colorDiv.id = 'colorBtn_'+stock.productID+'_'+stock.colorID;
-                    colorDiv.onclick = () =>{
+                    colorDiv.id = 'colorBtn_' + stock.productID + '_' + stock.colorID;
+                    colorDiv.onclick = () => {
                         SelectedProductChangeColor(stock.productID, stock.colorID);
                     }
                     colorDiv.classList.add('rounded-circle');
@@ -566,17 +571,17 @@ const SelecteProductChangeSize = (productID, sizeID) => {
                     colorDiv.classList.add('ms-1');
                     colorDiv.classList.add('border-5');
                     colorDiv.style.backgroundColor = stock.colorHex;
-                    if(i === 0 ){
+                    if (i === 0) {
                         colorDiv.classList.add('active-color-circle');
-                        document.getElementById('colorName_'+productID).innerText = stock.colorName;
-                        document.getElementById('qty_label_'+productID).innerText = stock.qty;
-                        document.getElementById('priceTag_'+productID).innerText = "$ "+stock.price;
-                        document.getElementById('shippingCostTag_'+productID).innerText ="$ "+stock.shipping;
+                        document.getElementById('colorName_' + productID).innerText = stock.colorName;
+                        document.getElementById('qty_label_' + productID).innerText = stock.qty;
+                        document.getElementById('priceTag_' + productID).innerText = "$ " + stock.price;
+                        document.getElementById('shippingCostTag_' + productID).innerText = "$ " + stock.shipping;
                         PRODUCTSIZEANDCOLOR['color'] = stock.colorID
                         PRODUCTSIZEANDCOLOR['price'] = stock.price
                         PRODUCTSIZEANDCOLOR['qty'] = stock.qty
                         PRODUCTSIZEANDCOLOR['ship'] = stock.shipping
-                    }else{
+                    } else {
                         colorDiv.classList.add('de-active-color-circle');
                     }
                     colorContainer.appendChild(colorDiv);
@@ -603,190 +608,191 @@ const SelectedProductChangeColor = (productID, colorID) => {
     PRODUCTSIZEANDCOLOR['color'] = colorID;
     SELECTEDPRODUCTSIZECOLOR[productID];
     console.log(SELECTEDPRODUCTSIZECOLOR[productID]);
-    if(beforeSelectedColorID != undefined && beforeSelectedColorID != null){
-        const beforeColorBtn = document.getElementById('colorBtn_'+productID+'_'+beforeSelectedColorID);
+    if (beforeSelectedColorID != undefined && beforeSelectedColorID != null) {
+        const beforeColorBtn = document.getElementById('colorBtn_' + productID + '_' + beforeSelectedColorID);
         beforeColorBtn.classList.remove('active-color-circle');
         beforeColorBtn.classList.add('de-active-color-circle');
     }
 
-    const selectedColorBtn = document.getElementById('colorBtn_'+productID+'_'+colorID);
+    const selectedColorBtn = document.getElementById('colorBtn_' + productID + '_' + colorID);
     selectedColorBtn.classList.remove('de-active-color-circle');
     selectedColorBtn.classList.add('active-color-circle');
 
-    document.getElementById('qty_label_'+productID).innerText =PRODUCTSIZEANDCOLOR['qty'];
-    document.getElementById('priceTag_'+productID).innerText = "$ "+PRODUCTSIZEANDCOLOR['price'];
-    document.getElementById('shippingCostTag_'+productID).innerText ="$ "+PRODUCTSIZEANDCOLOR['ship']
+    document.getElementById('qty_label_' + productID).innerText = PRODUCTSIZEANDCOLOR['qty'];
+    document.getElementById('priceTag_' + productID).innerText = "$ " + PRODUCTSIZEANDCOLOR['price'];
+    document.getElementById('shippingCostTag_' + productID).innerText = "$ " + PRODUCTSIZEANDCOLOR['ship']
 
 }
 
 
-
-const  signupUser = () =>{
+const signupUser = () => {
     const name = document.getElementById("name").value;
     const email = document.getElementById("e").value;
     const mobile = document.getElementById("m").value;
     const password = document.getElementById("p").value;
     const retypePassword = document.getElementById("pretype").value;
 
-    const form  = new FormData();
-    form.append('name',name);
-    form.append('email',email);
-    form.append('mobile',mobile);
-    form.append('password',password);
-    form.append('retypePassword',retypePassword);
+    const form = new FormData();
+    form.append('name', name);
+    form.append('email', email);
+    form.append('mobile', mobile);
+    form.append('password', password);
+    form.append('retypePassword', retypePassword);
 
     const xmlHTTPRequest = new XMLHttpRequest();
     xmlHTTPRequest.onreadystatechange = function () {
-        if(xmlHTTPRequest.readyState === 4 && xmlHTTPRequest.status === 200){
+        if (xmlHTTPRequest.readyState === 4 && xmlHTTPRequest.status === 200) {
             const obj = JSON.parse(xmlHTTPRequest.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
-                hideViewComponent('signup','VCcontainer')
-            }else{
-                showErrorToast('oops!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
+                hideViewComponent('signup', 'VCcontainer')
+            } else {
+                showErrorToast('oops!', obj.message);
 
             }
         }
     }
 
 
-    xmlHTTPRequest.open('POST','process/login-user.php',true)
+    xmlHTTPRequest.open('POST', 'process/login-user.php', true)
     xmlHTTPRequest.send(form);
 }
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-const vcUser = () =>{
-    const  vc = document.getElementById('verificationCode').value;
+
+const vcUser = () => {
+    const vc = document.getElementById('verificationCode').value;
     document.getElementById('spinner_VC').classList.remove('d-none');
     const form = new FormData();
-    form.append('vc',vc);
+    form.append('vc', vc);
 
     const xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.onreadystatechange = async  function (){
-       if(xmlHttpRequest.readyState === 4 && xmlHttpRequest.status === 200){
-           const obj = JSON.parse(xmlHttpRequest.responseText);
-           if(obj.statusCode === 1){
-               showSuccessToast('Success!',obj.message);
-               await sleep(2000);
-               document.getElementById('spinner_VC').classList.add('d-none');
+    xmlHttpRequest.onreadystatechange = async function () {
+        if (xmlHttpRequest.readyState === 4 && xmlHttpRequest.status === 200) {
+            const obj = JSON.parse(xmlHttpRequest.responseText);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
+                await sleep(2000);
+                document.getElementById('spinner_VC').classList.add('d-none');
 
-               window.location.reload();
-           }else{
-               await sleep(2000);
+                window.location.reload();
+            } else {
+                await sleep(2000);
 
-               document.getElementById('spinner_VC').classList.add('d-none');
-               showErrorToast('oops!',obj.message);
+                document.getElementById('spinner_VC').classList.add('d-none');
+                showErrorToast('oops!', obj.message);
 
-           }
-       }
+            }
+        }
     }
-    xmlHttpRequest.open('POST','process/verity_user.php',true);
+    xmlHttpRequest.open('POST', 'process/verity_user.php', true);
     xmlHttpRequest.send(form);
 }
 
-const signin= ()=>{
+const signin = () => {
 
     const email = document.getElementById('e2').value;
     const password = document.getElementById('p2').value
     const rememberMe = document.getElementById('remember').checked;
 
     const form = new FormData();
-    form.append('email',email);
-    form.append('password',password);
-    form.append('rememberMe',rememberMe);
+    form.append('email', email);
+    form.append('password', password);
+    form.append('rememberMe', rememberMe);
 
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function (){
-        if(xhr.readyState === 4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
                 window.location.href = "index.php";
-            }else {
-                if(obj.message === "Your account is not verified"){
-                    showErrorToast("OOPs!",obj.message);
-                    hideViewComponent('signin','VCcontainer')
-                }else{
-                    showErrorToast("OOPs!",obj.message);
+            } else {
+                if (obj.message === "Your account is not verified") {
+                    showErrorToast("OOPs!", obj.message);
+                    hideViewComponent('signin', 'VCcontainer')
+                } else {
+                    showErrorToast("OOPs!", obj.message);
                 }
             }
         }
     }
 
-    xhr.open('POST','process/signin-user.php',true);
+    xhr.open('POST', 'process/signin-user.php', true);
     xhr.send(form);
 }
 
-const adminSignin= ()=>{
+const adminSignin = () => {
 
     const email = document.getElementById('e2').value;
     const password = document.getElementById('p2').value
     const rememberMe = document.getElementById('remember').checked;
 
     const form = new FormData();
-    form.append('email',email);
-    form.append('password',password);
-    form.append('rememberMe',rememberMe);
+    form.append('email', email);
+    form.append('password', password);
+    form.append('rememberMe', rememberMe);
 
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function (){
-        if(xhr.readyState === 4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
                 window.location.href = "admin-panel.php";
-            }else {
+            } else {
 
-                    showErrorToast("OOPs!",obj.message);
+                showErrorToast("OOPs!", obj.message);
 
             }
         }
     }
 
-    xhr.open('POST','process/signin-admin.php',true);
+    xhr.open('POST', 'process/signin-admin.php', true);
     xhr.send(form);
 }
-const addToWhishListInHome = (productID)=>{
+const addToWhishListInHome = (productID) => {
 
-    if(document.getElementById("heartIcon_1_"+productID).classList.contains('bi-heart-fill')){
-        document.getElementById("heartIcon_1_"+productID).classList.remove('bi-heart-fill');
-        document.getElementById("heartIcon_1_"+productID).classList.add('bi-heart');
+    if (document.getElementById("heartIcon_1_" + productID).classList.contains('bi-heart-fill')) {
+        document.getElementById("heartIcon_1_" + productID).classList.remove('bi-heart-fill');
+        document.getElementById("heartIcon_1_" + productID).classList.add('bi-heart');
 
-        document.getElementById("heartIcon_2_"+productID).classList.remove('bi-heart-fill');
-        document.getElementById("heartIcon_2_"+productID).classList.add('bi-heart');
-    }else{
-        document.getElementById("heartIcon_1_"+productID).classList.remove('bi-heart');
-        document.getElementById("heartIcon_1_"+productID).classList.add('bi-heart-fill');
+        document.getElementById("heartIcon_2_" + productID).classList.remove('bi-heart-fill');
+        document.getElementById("heartIcon_2_" + productID).classList.add('bi-heart');
+    } else {
+        document.getElementById("heartIcon_1_" + productID).classList.remove('bi-heart');
+        document.getElementById("heartIcon_1_" + productID).classList.add('bi-heart-fill');
 
-        document.getElementById("heartIcon_2_"+productID).classList.remove('bi-heart');
-        document.getElementById("heartIcon_2_"+productID).classList.add('bi-heart-fill');
+        document.getElementById("heartIcon_2_" + productID).classList.remove('bi-heart');
+        document.getElementById("heartIcon_2_" + productID).classList.add('bi-heart-fill');
     }
 
     const xhr = new XMLHttpRequest();
     const form = new FormData();
-    form.append('productID',productID);
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    form.append('productID', productID);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
-            }else{
-                showErrorToast('Oops!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
+            } else {
+                showErrorToast('Oops!', obj.message);
             }
         }
     }
-    xhr.open('POST','process/addRemoveWhishList.php',true);
+    xhr.open('POST', 'process/addRemoveWhishList.php', true);
     xhr.send(form)
 }
 
-const loadWishListsData  = ()=>{
+const loadWishListsData = () => {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             // itemsCount
             const obj = JSON.parse(xhr.responseText);
@@ -795,157 +801,254 @@ const loadWishListsData  = ()=>{
 
         }
     }
-    xhr.open('GET','process/getWhishListItems.php',true);
+    xhr.open('GET', 'process/getWhishListItems.php', true);
     xhr.send()
 }
 
-const removeFromWhishList = (productID) =>{
+const removeFromWhishList = (productID) => {
     const xhr = new XMLHttpRequest();
     const form = new FormData();
-    form.append('productID',productID);
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    form.append('productID', productID);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
+            if (obj.statusCode === 1) {
                 loadWishListsData();
-                showSuccessToast('Success!',obj.message);
-            }else{
-                showErrorToast('Oops!',obj.message);
+                showSuccessToast('Success!', obj.message);
+            } else {
+                showErrorToast('Oops!', obj.message);
             }
         }
     }
-    xhr.open('POST','process/addRemoveWhishList.php',true);
+    xhr.open('POST', 'process/addRemoveWhishList.php', true);
     xhr.send(form)
 }
 
 
-const AddToCart =(productID) =>{
-    const  qty = document.getElementById('quentity_'+productID).value;
+const AddToCart = (productID) => {
+    const qty = document.getElementById('quentity_' + productID).value;
 
-    if(SELECTEDPRODUCTSIZECOLOR[productID] === null || SELECTEDPRODUCTSIZECOLOR[productID] === undefined){
-        showErrorToast("Opps!","please Select Size First!")
-        return ;
-    }else if(SELECTEDPRODUCTSIZECOLOR[productID]["color"] === null || SELECTEDPRODUCTSIZECOLOR[productID]["color"] === undefined){
-        showErrorToast("Opps!","please Select Color First!")
-        return ;
-    }else if(SELECTEDPRODUCTSIZECOLOR[productID]["size"] === null || SELECTEDPRODUCTSIZECOLOR[productID]["size"] === undefined){
-        showErrorToast("Opps!","please Select Size First!")
+    if (SELECTEDPRODUCTSIZECOLOR[productID] === null || SELECTEDPRODUCTSIZECOLOR[productID] === undefined) {
+        showErrorToast("Opps!", "please Select Size First!")
         return;
-    }else if(qty == 0){
-        showErrorToast("Opps!","please enter a product quentity")
-    }else if(qty > 10){
-        showErrorToast("Opps!","maximum  quentity is 10")
-        document.getElementById('quentity_'+productID).value = 10;
-    }else{
+    } else if (SELECTEDPRODUCTSIZECOLOR[productID]["color"] === null || SELECTEDPRODUCTSIZECOLOR[productID]["color"] === undefined) {
+        showErrorToast("Opps!", "please Select Color First!")
+        return;
+    } else if (SELECTEDPRODUCTSIZECOLOR[productID]["size"] === null || SELECTEDPRODUCTSIZECOLOR[productID]["size"] === undefined) {
+        showErrorToast("Opps!", "please Select Size First!")
+        return;
+    } else if (qty == 0) {
+        showErrorToast("Opps!", "please enter a product quentity")
+    } else if (qty > 10) {
+        showErrorToast("Opps!", "maximum  quentity is 10")
+        document.getElementById('quentity_' + productID).value = 10;
+    } else {
         const colorID = SELECTEDPRODUCTSIZECOLOR[productID]["color"];
         const sizeID = SELECTEDPRODUCTSIZECOLOR[productID]["size"];
 
         const xhr = new XMLHttpRequest();
         const form = new FormData();
-        form.append('colorID',colorID);
-        form.append("productID",productID);
-        form.append('sizeID',sizeID);
-        form.append('qty',qty);
+        form.append('colorID', colorID);
+        form.append("productID", productID);
+        form.append('sizeID', sizeID);
+        form.append('qty', qty);
 
-        xhr.onreadystatechange = function (){
-            if(xhr.readyState === 4 && xhr.status === 200) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log(xhr.responseText);
                 const obj = JSON.parse(xhr.responseText);
-                if(obj.statusCode === 1){
-                    showSuccessToast('Success!',obj.message);
-                }else{
-                    showErrorToast('Oops!',obj.message);
+                if (obj.statusCode === 1) {
+                    showSuccessToast('Success!', obj.message);
+                } else {
+                    showErrorToast('Oops!', obj.message);
                 }
             }
         }
 
-        xhr.open('POST','process/addToCart.php',true);
+        xhr.open('POST', 'process/addToCart.php', true);
         xhr.send(form)
 
 
     }
 
 
-
 }
 
-const loadCartData  = ()=>{
+const loadCartData = () => {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             // itemsCount
             const obj = JSON.parse(xhr.responseText);
             // document.getElementById("whishListItemCount").innerHTML = obj.itemsCount + " Items";
             document.getElementById('cardItemBody').innerHTML = obj.items;
-            document.getElementById('cartProductCount').innerText = ": "+obj.productsCount;
+            document.getElementById('cartProductCount').innerText = ": " + obj.productsCount;
             document.getElementById('cartShippingAddress').value = obj.shippingAddress;
-            document.getElementById('cartSubTotal').innerText = ": $"+obj.subTotal;
-            document.getElementById('cartshippingTotal').innerText = ": $"+obj.shippingTotal;
-            document.getElementById('cartGrandTotal').innerText = ": $"+obj.total;
-
+            document.getElementById('cartSubTotal').innerText = ": $" + obj.subTotal;
+            document.getElementById('cartshippingTotal').innerText = ": $" + obj.shippingTotal;
+            document.getElementById('cartGrandTotal').innerText = ": $" + obj.total;
 
 
         }
     }
-    xhr.open('GET','process/getCartItems.php',true);
+    xhr.open('GET', 'process/getCartItems.php', true);
     xhr.send()
 }
 
-const removeFromCart =(cartID)=>{
+const removeFromCart = (cartID) => {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
                 loadCartData();
-            }else{
-                showErrorToast('Oops!',obj.message);
+            } else {
+                showErrorToast('Oops!', obj.message);
             }
         }
     }
-    xhr.open('GET','process/removeFromCart.php?cartID='+cartID,true);
+    xhr.open('GET', 'process/removeFromCart.php?cartID=' + cartID, true);
     xhr.send()
 }
 
-const confirmPayment=(orderID)=>{
+const confirmPayment = (orderID) => {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
 
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
                 loadAdminPages(2);
-            }else{
-                showErrorToast('Oops!',obj.message);
+            } else {
+                showErrorToast('Oops!', obj.message);
             }
         }
     }
-    xhr.open('GET','process/confirmPayment.php?orderID='+orderID,true);
+    xhr.open('GET', 'process/confirmPayment.php?orderID=' + orderID, true);
     xhr.send()
 }
 
-const placeOrder = (orderID) =>{
+const placeOrder = (orderID) => {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState ===4 && xhr.status === 200){
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.responseText);
 
             const obj = JSON.parse(xhr.responseText);
-            if(obj.statusCode === 1){
-                showSuccessToast('Success!',obj.message);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
                 loadAdminPages(2);
-            }else{
-                showErrorToast('Oops!',obj.message);
+            } else {
+                showErrorToast('Oops!', obj.message);
             }
         }
     }
-    xhr.open('GET','process/placeOrder.php?orderID='+orderID,true);
+    xhr.open('GET', 'process/placeOrder.php?orderID=' + orderID, true);
     xhr.send()
 }
 
+const searchBoxOnchange = () => {
+    document.getElementById('keyWords').value = document.getElementById('searchbox').value;
+}
+const keywordBoxOnchange = () => {
+    document.getElementById('searchbox').value = document.getElementById('keyWords').value;
+}
+const searchProductWithFilters = () => {
+    // const priceFrom = document.getElementById('priceFrom').value == null ? 0 : document.getElementById('priceFrom').value;
+    // const priceTo = document.getElementById('priceTo').value == null ? 0 : document.getElementById('priceTo').value;
+    // const categoryID = document.getElementById('category_select').value;
+    // const colorName = document.getElementById('color_select').value;
+    // const sortPrice = document.getElementById("HtoL").checked ? "HtoL" : "LtoH";
+    // const keyWords = document.getElementById('keyWords').value;
+    //
+    // location.href = "search.php?priceFrom = "+priceFrom+ //TODO - make this Get Request
+
+
+    const priceFrom = document.getElementById('priceFrom').value || 0; // Use default value if null
+    const priceTo = document.getElementById('priceTo').value || 0; // Use default value if null
+    const categoryID = document.getElementById('category_select').value;
+    const colorName = document.getElementById('color_select').value;
+    const sortPrice = document.getElementById("HtoL").checked ? "HtoL" : "LtoH";
+    const keyWords = document.getElementById('keyWords').value;
+
+    // Construct the URL
+    let url = "searchProduct.php?";
+    url += "priceFrom=" + encodeURIComponent(priceFrom); // Encode parameters to handle special characters
+    url += "&priceTo=" + encodeURIComponent(priceTo);
+    url += "&categoryID=" + encodeURIComponent(categoryID);
+    url += "&colorName=" + encodeURIComponent(colorName);
+    url += "&sortPrice=" + encodeURIComponent(sortPrice);
+    url += "&keyWords=" + encodeURIComponent(keyWords);
+
+    // Redirect to the constructed URL
+    location.href = url;
+
+}
+
+
+const updateProduct = (productID) => {
+
+    const request = new XMLHttpRequest();
+    request.open("GET", 'pages/update-product.php?pid=' + productID, true)
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            console.log(request.responseText);
+            const responseObj = JSON.parse(request.responseText);
+            console.log(responseObj)
+            if (responseObj.statusCode === 1) {
+
+                document.getElementById("adminCenter").innerHTML = responseObj.body;
+            } else {
+                showErrorToast("update product page loading error ERROR", responseObj.message);
+            }
+
+            if (id == 7) {
+                location.reload();
+            }
+        }
+    }
+    request.send()
+}
+
+const loadOrderProcessModelData = (id) => {
+    document.getElementById('orderProcessModelID').innerText = "Order Status "+id+"";
+    const request = new XMLHttpRequest();
+    request.open("GET", 'process/viewOrderProcessModel.php?oid=' +id , true)
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            console.log(request.responseText);
+            const responseObj = JSON.parse(request.responseText);
+            console.log(responseObj)
+            if (responseObj.statusCode === 1) {
+                const items = responseObj.message;
+                const processModelTimeline = document.getElementById('processModelTimeline');
+                for (const item of items) {
+                    const elementItem = `
+<li class="timeline-item mb-5">
+      <span class="timeline-icon">
+      <i class="bi bi-info fs-2"></i>
+      </span>
+
+            <h5 class="fw-bold">${item['status']}</h5>
+            <p class="text-muted mb-2 fw-bold">${item['date_time']}</p>
+        </li>`
+                    processModelTimeline.innerHTML += elementItem;
+                }
+
+            } else {
+                showErrorToast("Error Update ", responseObj.message);
+            }
+
+            if (id == 7) {
+                location.reload();
+            }
+        }
+    }
+    request.send()
+}

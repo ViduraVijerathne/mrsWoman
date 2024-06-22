@@ -5,6 +5,10 @@ if(isset($_SESSION['user_email']) && $_SESSION['user_password']){
     $email = $_SESSION['user_email'];
     $isLogin = true;
 }
+$keywords = "";
+if(isset($_GET['keyWords'])){
+    $keywords = strtolower($_GET['keyWords']);
+}
 
 
 ?>
@@ -46,7 +50,7 @@ if(isset($_SESSION['user_email']) && $_SESSION['user_password']){
 
                         </ul>
 
-                        <form class="d-flex col-lg-6  col-12" role="search">
+                        <div class="d-flex col-lg-6  col-12" role="search">
                             <div class="input-group mb-3">
 <!--                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">All cattogories</button>-->
 <!--                                <ul class="dropdown-menu">-->
@@ -55,10 +59,11 @@ if(isset($_SESSION['user_email']) && $_SESSION['user_password']){
 <!--                                    <li><a class="dropdown-item" href="#">Computers</a></li>-->
 <!--                                    <li><a class="dropdown-item" href="#">computer accessories</a></li>-->
 <!--                                </ul>-->
-                                <input type="text" class="form-control" placeholder="Search..." aria-label="Text input with dropdown button">
-                                <button class="btn btn-dark">Search</button>
+                                <input type="text" class="form-control" placeholder="Search..." id="searchbox" onchange="searchBoxOnchange()" aria-label="Text input with dropdown button" value="<?php echo $keywords ?>">
+                                <button class="btn btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#searchWithFilterModel" >Add Filters</button>
+                                <button class="btn btn-dark" onclick="searchProductWithFilters()">Search</button>
                             </div>
-                        </form>
+                        </div>
 
                         <div class="col-3 d-none d-lg-flex justify-content-end ">
 

@@ -126,9 +126,10 @@ if (isAdmin()) {
                     </div>
                     <div class="row m-1">
                         <?php
-                        if($leastOrderStatus == $PAYMENT_PROCESSING){
-                            echo "<div class='btn btn-danger'> INCOMPLETE PAYMENT </div>";
-                        }else if($leastOrderStatus == $ORDERING){
+//                        if($leastOrderStatus == $PAYMENT_PROCESSING){
+//                            echo "<div class='btn btn-danger'> INCOMPLETE PAYMENT </div>";
+//                        }else
+                            if($leastOrderStatus == $ORDERING ||$leastOrderStatus == $PAYMENT_PROCESSING ){
                            $id = "'" . $orderID . "'";
                            $action = "confirmPayment(" . $id . ")";
                            echo "<div class='btn btn-primary' onclick=\"" . $action . "\">CONFIRM PAYMENT </div>";

@@ -24,12 +24,16 @@ if(isAdmin()){
     <link rel="stylesheet" href="./css/styles.css" class="css">
     <script src="css/bootstrap/js/bootstrap.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/dashboard.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Include Chart.js from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title><?php echo $PAGE_NAME . " " . $APP_NAME ?></title>
 </head>
 
-<!--<body class="overflow-hidden" onload="navigationAdminPanel('0')">-->
-<body class="overflow-hidden">
+<body class="overflow-hidden" onload="navigationAdminPanel('0')">
+<!--<body class="overflow-hidden">-->
 
 <div class="container-fluid">
     <div class="row">
@@ -55,7 +59,7 @@ if(isAdmin()){
                     id="navBtn_2"><i class="bi bi-window-desktop"></i>&nbsp;Active Orders
             </button>
             <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('3')"
-                    id="navBtn_3"><i class="bi bi-truck"></i>&nbsp; Delivered Products
+                    id="navBtn_3"><i class="bi bi-truck"></i>&nbsp; Delivered Orders
             </button>
             <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('4')"
                     id="navBtn_4"><i class="bi bi-receipt"></i>&nbsp; Invoices

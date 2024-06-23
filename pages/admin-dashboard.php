@@ -6,6 +6,7 @@ require_once "../const/statesCodes.php";
 require_once "../const/app.php";
 require_once '../const/auth.php';
 require_once "../database/Database.php";
+require_once "../components/error404.php";
 global $SUCCESS;
 global $IS_DEBUG_MODE;
 

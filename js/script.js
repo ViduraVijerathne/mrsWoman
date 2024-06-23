@@ -116,6 +116,22 @@ const adminPanelList = {
     8: {
         name: "Add Product",
         process: "pages/add-product.php"
+    },
+    10:{
+        name: "User-panel Active Orders",
+        process: "pages/user-panel-active-orders.php"
+    },
+    11:{
+        name: "User-panel Complete Orders",
+        process: "pages/user-panel-complete-orders.php"
+    },
+    12:{
+        name: "User-panel AddressBook",
+        process: "pages/user-panel-addressBook.php"
+    },
+    13:{
+        name: "User-panel AddressBook",
+        process: "pages/user-logout.php"
     }
 };
 
@@ -154,7 +170,7 @@ const loadAdminPages = (id) => {
                 showErrorToast(adminPanelList[id].name + " ERROR", responseObj.message);
             }
 
-            if (id == 7) {
+            if (id == 7 || id == 13) {
                 location.reload();
             }
         }

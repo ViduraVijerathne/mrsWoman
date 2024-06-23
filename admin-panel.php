@@ -61,15 +61,15 @@ if(isAdmin()){
             <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('3')"
                     id="navBtn_3"><i class="bi bi-truck"></i>&nbsp; Delivered Orders
             </button>
-            <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('4')"
-                    id="navBtn_4"><i class="bi bi-receipt"></i>&nbsp; Invoices
-            </button>
+<!--            <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('4')"-->
+<!--                    id="navBtn_4"><i class="bi bi-receipt"></i>&nbsp; Invoices-->
+<!--            </button>-->
             <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('5')"
                     id="navBtn_5"><i class="bi bi-person-badge-fill"></i>&nbsp; Customers
             </button>
-            <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('6')"
-                    id="navBtn_6"><i class="bi bi-chat-dots-fill"></i>&nbsp; Messages
-            </button>
+<!--            <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('6')"-->
+<!--                    id="navBtn_6"><i class="bi bi-chat-dots-fill"></i>&nbsp; Messages-->
+<!--            </button>-->
             <button class="col-12 btn mt-1 btn-light fw-bold text-start" onclick="navigationAdminPanel('7')"
                     id="navBtn_7"><i class="bi bi-door-open-fill"></i>&nbsp; Log Out
             </button>

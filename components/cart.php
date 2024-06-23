@@ -164,7 +164,7 @@
                                             </div>
                                             <div class="col-7 ">
 <!--                                                <textarea rows="10" type="text" class="form-control" id="cartShippingAddress"></textarea>-->
-                                                <select name="address" id="addressComboBox" class="form-control ">
+                                                <select name="address" id="cartShippingAddress" class="form-control ">
                                                     <?php
                                                     $db = new \database\Database();
                                                     $q = "SELECT * FROM address WHERE address.user_email = :email";
@@ -172,14 +172,14 @@
                                                     $db->bind("email",$_SESSION['user_email']);
                                                     $results = $db->resultSet();
                                                     foreach ($results as $row){
-                                                        echo "<option class='form-check' id='".$row['address_id']."'>".$row['address']." : ".$row['postalcode']."</option>";
+                                                        echo "<option class='form-check' value='".$row['address_id']."'>".$row['address']." : ".$row['postalcode']."</option>";
                                                     }
 
                                                     ?>
                                                 </select>
                                             </div>
                                             <div class="col-1">
-                                                <button class="btn btn-dark " onclick="location.href='user-panel.php'"><i class="bi bi-pencil-square"></i></button>
+                                                <button class="btn btn-dark " onclick="location.href='user-panel.php?panelID=12'"><i class="bi bi-pencil-square"></i></button>
                                             </div>
                                         </div>
 

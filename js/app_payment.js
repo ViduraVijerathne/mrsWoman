@@ -1,5 +1,10 @@
 // 5307732125531191
 const checkOut=()=>{
+    const addressID = document.getElementById("cartShippingAddress").value;
+    if(addressID == null || addressID == 0){
+        showErrorToast("Error","Please add or select an Address")
+        return;
+    }
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if(xhr.readyState == 4){
@@ -10,7 +15,7 @@ const checkOut=()=>{
             payhere.startPayment(payment);
         }
     }
-    xhr.open("GET","process/checkout.php");
+    xhr.open("GET","process/checkout.php?addressID="+addressID);
     xhr.send();
 }
 

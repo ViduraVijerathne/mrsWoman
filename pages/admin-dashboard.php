@@ -122,10 +122,10 @@ WHERE
 ";
                                 $productCountDB->query($q);
                                 $result = $productCountDB->resultSet();
-                                echo $result[0]["total_quantity_sold"];
+                                echo $result[0]["total_quantity_sold"] == null ? 0 : $result[0]["total_quantity_sold"];
                                 echo  " Items Sold </br>";
                                 echo "$";
-                                echo  $result[0]["total_sales_amount"];
+                                echo  $result[0]["total_sales_amount"] == null ? 0 : $result[0]["total_sales_amount"];
                                 echo " Sales"
                                 ?>
                             </div>

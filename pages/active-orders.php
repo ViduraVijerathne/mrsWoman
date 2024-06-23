@@ -64,6 +64,7 @@ if (isAdmin()) {
     <?php
     $db = new database\Database();
     $query = "SELECT * FROM `order`";
+
     $db->query($query);
     $orders = $db->resultSet();
 
@@ -72,6 +73,10 @@ if (isAdmin()) {
         $details = "email : " . $order['user_email'] . "</br>";
         $details .= "address : " . $order['shipping_address'] . "</br>";
         $details .= "postalCode : " . $order['postal_code'] . "</br>";
+        $leastOrderStatus = getOrderLeastStatus($orderID);
+
+        if($leastOrderStatus != 'PLACE_ORDER'){
+
 
         ?>
 
@@ -90,7 +95,8 @@ if (isAdmin()) {
                 $db->query($query);
                 $db->bind(":orderID", $orderID);
                 $stocks = $db->resultSet();
-                $leastOrderStatus = getOrderLeastStatus($orderID);
+
+
                 foreach ($stocks as $stock) {
 
                     ?>
@@ -156,6 +162,7 @@ if (isAdmin()) {
         </div>
 
         <?php
+          }
     }
 
     $obj->body .= ob_get_clean();

@@ -6,7 +6,7 @@ require_once "../database/Database.php";
 require_once '../const/auth.php';
 require_once  '../const/orderStatus.php';
 $obj = new stdClass();
-if(isAdmin()){
+if(isAdmin() || isUser()){
     if(!isset($_GET['oid'])){
         $obj->message = "order ID is required";
         $obj->statusCode = $ERROR;

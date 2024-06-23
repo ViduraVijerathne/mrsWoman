@@ -34,6 +34,9 @@ if (isUser()) {
         <div class="col-2">
             <input class="form-control" type="text" placeholder="address" id="addAddress_address">
         </div>
+        <div class="col-2">
+            <input class="form-control" type="text" placeholder="contact number" id="addAddress_contact">
+        </div>
         <div class="col-2 mt-1">
             <div class="btn btn-outline-dark" onclick="addAddress()">
                ADD
@@ -47,7 +50,7 @@ if (isUser()) {
         <div class="col-12 text-center bg-dark text-light fw-bold rounded">
             <div class="row">
                 <div class="col-1 border-end d-flex justify-content-center align-items-center">
-                    <span>Address ID</span>
+                    <span>Contact No</span>
                 </div>
                 <div class="col-2 d-flex justify-content-center align-items-center">
                     <span>Country</span>
@@ -92,7 +95,7 @@ if (isUser()) {
                 <div class="col-12 text-center bg-white mt-2 border-bottom fw-bold rounded">
                     <div class="row">
                         <div class="col-1 border-end d-flex justify-content-center align-items-center">
-                            <span><?php echo $addressID; ?></span>
+                            <span><?php echo $address['contact']; ?></span>
                         </div>
                         <div class="col-2 d-flex justify-content-center align-items-center">
                             <span><?php echo htmlspecialchars($country); ?></span>

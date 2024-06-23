@@ -159,15 +159,27 @@
                                         </div>
 
                                         <div class="row fw-bold fs-4">
-                                            <div class="col-2 fs-5">
+                                            <div class="col-3 fs-5">
                                                 Ship To
                                             </div>
-                                            <div class="col-9 ">
-                                                <textarea rows="10" type="text" class="form-control" id="cartShippingAddress"></textarea>
+                                            <div class="col-7 ">
+<!--                                                <textarea rows="10" type="text" class="form-control" id="cartShippingAddress"></textarea>-->
+                                                <select name="address" id="addressComboBox" class="form-control ">
+                                                    <?php
+                                                    $db = new \database\Database();
+                                                    $q = "SELECT * FROM address WHERE address.user_email = :email";
+                                                    $db->query($q);
+                                                    $db->bind("email",$_SESSION['user_email']);
+                                                    $results = $db->resultSet();
+                                                    foreach ($results as $row){
+                                                        echo "<option class='form-check' id='".$row['address_id']."'>".$row['address']." : ".$row['postalcode']."</option>";
+                                                    }
 
+                                                    ?>
+                                                </select>
                                             </div>
                                             <div class="col-1">
-                                                <button class="btn btn-dark "><i class="bi bi-pencil-square"></i></button>
+                                                <button class="btn btn-dark " onclick="location.href='user-panel.php'"><i class="bi bi-pencil-square"></i></button>
                                             </div>
                                         </div>
 

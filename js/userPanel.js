@@ -8,9 +8,12 @@ const addAddress = ()=>{
     const city = document.getElementById("addAddress_city").value.trim();
     const postalcode = document.getElementById("addAddress_postalcode").value.trim();
     const address = document.getElementById("addAddress_address").value.trim();
+    const contact = document.getElementById("addAddress_contact").value.trim();
 
     // Regular expressions for validation
     const postalCodePattern = /^[0-9]{5}(?:-[0-9]{4})?$/; // Example for US ZIP codes
+    const contactPattern = /^[0-9]{10}$/; // Example for a 10-digit phone number
+
 
     // Validation checks
     if (!country) {
@@ -40,6 +43,13 @@ const addAddress = ()=>{
     if (!address) {
         showErrorToast("Error","Address is required");
         return ;
+    }if (!contact) {
+        showErrorToast("Error", "Contact is required");
+        return;
+    }
+    if (!contactPattern.test(contact)) {
+        showErrorToast("Error", "Invalid contact format");
+        return;
     }
 
     const form = new FormData();
@@ -49,11 +59,12 @@ const addAddress = ()=>{
     form.append("city",city);
     form.append("postalcode",postalcode);
     form.append("address",address);
-
+    form.append("contact", contact);
 
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function (){
         if(xhr.readyState == 4){
+            console.log(xhr.responseText)
             const res = JSON.parse(xhr.responseText);
             console.log(res)
             if(res.statusCode == 1){

@@ -81,10 +81,19 @@ function emptyCart(){
     $db->bind(":email", $_SESSION['user_email']);
     $db->execute();
 }
+
+
 if(!isset($_SESSION['user_email'])){
     $obj->message = "authentication failed";
     $obj->statusCode = $ERROR;
-}else {
+}else if(!isset($_GET['addressID'])){
+    $obj->message = "Address Error";
+    $obj->statusCode = $ERROR;
+}else if($_GET['addressID'] ==0 ){
+    $obj->message = "invalid address";
+    $obj->statusCode = $ERROR;
+}
+else {
     $email = $_SESSION['user_email'];
     $db = new \database\Database();
     $q = "SELECT * FROM cart WHERE user_email = :email";
@@ -92,9 +101,17 @@ if(!isset($_SESSION['user_email'])){
     $db->bind(":email", $email);
     $results = $db->resultSet();
 
+
+    $addressDB = new \database\Database();
+    $addressq = "SELECT * FROM address WHERE address.address_id = :id";
+    $addressDB->query($addressq);
+    $addressDB->bind("id",$_GET['addressID']);
+    $addressResults = $addressDB->resultSet();
+    $addressResult = $addressResults[0];
+
     $productsCount = 0;
     $itemsCount = 0;
-    $shippingAddress = "moroththa,madahapola 60552 Sri Lanka";
+    $shippingAddress =$addressResult['address'];
     $subTotal = 0;
     $shippingTotal = 0;
     $total = 0;
@@ -118,7 +135,7 @@ if(!isset($_SESSION['user_email'])){
     }
     $total = $subTotal + $shippingTotal;
     $orderID =mt_rand(100000, 999999);
-    $city = uniqid();
+    $city = $addressResult['city'];
     $merchant_secret = "MzA3MjI5NTU4MzE2Mjg4MDMzNzQyNjU2ODg3ODIzOTg1MTI5MDEy";
 
     $payment = new stdClass();
@@ -134,13 +151,13 @@ if(!isset($_SESSION['user_email'])){
     $payment->first_name = $_SESSION['user_name'];
     $payment->last_name = $_SESSION['user_name'];
     $payment->email = $email;
-    $payment->phone = $_SESSION['user_mobile'];
+    $payment->phone = $addressResult['contact'];
     $payment->address = $shippingAddress;
     $payment->city = $city;
-    $payment->country = "Sri Lanka";
-    $payment->delivery_address = "No. 46, Galle road, Kalutara South";
-    $payment->delivery_city = "Kalutara";
-    $payment->delivery_country = "Sri Lanka";
+    $payment->country = $addressResult['country'] ;
+    $payment->delivery_address =$shippingAddress;
+    $payment->delivery_city = $city;
+    $payment->delivery_country = $addressResult['country'];
     $payment->custom_1 = "";
     $payment->custom_2 = "";
     $_SESSION['last_order_id'] = $payment->order_id;
@@ -157,8 +174,8 @@ if(!isset($_SESSION['user_email'])){
     $payment -> hash = $hash;
 
     $obj ->payment = $payment;
-    $shippingProvince = "kurunegala";
-    $postalCode = "60552";
+    $shippingProvince = $addressResult['province'];
+    $postalCode = $addressResult['postalcode'];
     addingToOrder($orderID,$shippingAddress,$payment->city,$shippingProvince,$payment->delivery_country,$postalCode,$payment->amount,$stocks);
     emptyCart();
     echo json_encode($obj);

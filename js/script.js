@@ -808,6 +808,9 @@ const addToWhishListInHome = (productID) => {
                 showSuccessToast('Success!', obj.message);
             } else {
                 showErrorToast('Oops!', obj.message);
+                if(obj.message =="Login Required"){
+                    location.href = 'login.php'
+                }
             }
         }
     }
@@ -888,6 +891,9 @@ const AddToCart = (productID) => {
                     showSuccessToast('Success!', obj.message);
                 } else {
                     showErrorToast('Oops!', obj.message);
+                    if(obj.message == "anouthenticated"){
+                        location.href = "login.php"
+                    }
                 }
             }
         }

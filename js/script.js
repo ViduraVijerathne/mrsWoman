@@ -991,36 +991,32 @@ const searchBoxOnchange = () => {
 const keywordBoxOnchange = () => {
     document.getElementById('searchbox').value = document.getElementById('keyWords').value;
 }
+
 const searchProductWithFilters = () => {
-    // const priceFrom = document.getElementById('priceFrom').value == null ? 0 : document.getElementById('priceFrom').value;
-    // const priceTo = document.getElementById('priceTo').value == null ? 0 : document.getElementById('priceTo').value;
-    // const categoryID = document.getElementById('category_select').value;
-    // const colorName = document.getElementById('color_select').value;
-    // const sortPrice = document.getElementById("HtoL").checked ? "HtoL" : "LtoH";
-    // const keyWords = document.getElementById('keyWords').value;
-    //
-    // location.href = "search.php?priceFrom = "+priceFrom+ //TODO - make this Get Request
-
-
-    const priceFrom = document.getElementById('priceFrom').value || 0; // Use default value if null
-    const priceTo = document.getElementById('priceTo').value || 0; // Use default value if null
+    const priceFrom = document.getElementById('priceFrom').value;
+    const priceTo = document.getElementById('priceTo').value;
     const categoryID = document.getElementById('category_select').value;
     const colorName = document.getElementById('color_select').value;
     const sortPrice = document.getElementById("HtoL").checked ? "HtoL" : "LtoH";
     const keyWords = document.getElementById('keyWords').value;
 
+    // Check if at least one field is filled
+    if (!priceFrom && !priceTo && !categoryID && !colorName && !keyWords) {
+        alert("Please enter at least one search criteria.");
+        return;
+    }
+
     // Construct the URL
     let url = "searchProduct.php?";
-    url += "priceFrom=" + encodeURIComponent(priceFrom); // Encode parameters to handle special characters
-    url += "&priceTo=" + encodeURIComponent(priceTo);
-    url += "&categoryID=" + encodeURIComponent(categoryID);
-    url += "&colorName=" + encodeURIComponent(colorName);
-    url += "&sortPrice=" + encodeURIComponent(sortPrice);
-    url += "&keyWords=" + encodeURIComponent(keyWords);
+    if (priceFrom) url += "priceFrom=" + encodeURIComponent(priceFrom) + "&";
+    if (priceTo) url += "priceTo=" + encodeURIComponent(priceTo) + "&";
+    if (categoryID) url += "categoryID=" + encodeURIComponent(categoryID) + "&";
+    if (colorName) url += "colorName=" + encodeURIComponent(colorName) + "&";
+    url += "sortPrice=" + encodeURIComponent(sortPrice) + "&";
+    if (keyWords) url += "keyWords=" + encodeURIComponent(keyWords);
 
     // Redirect to the constructed URL
     location.href = url;
-
 }
 
 

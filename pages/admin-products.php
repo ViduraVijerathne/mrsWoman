@@ -5,19 +5,68 @@ $obj->statusCode = 1;
 $obj->body = "";
 
 ob_start(); // Start output buffering
-
+require_once "../database/database.php";
 ?>
 
 <h1>Products</h1>
 <div class="row ">
-    <div class="col-6 offset-3">
-        <input class="form-control" type="text">
+    <div class="col-3">
+        <p class="fw-bold mt-2">keywords</p>
+        <input class="form-control" type="text" placeholder="Keywords" id="keyword">
+    </div>
+
+    <div class="col-2">
+        <p class="fw-bold mt-2">Select Product Category</p>
+        <select class="form-control" id="categoryOption">
+            <option value="0" class="form-control">Category</option>
+            <?php
+            $categoriesDb = new \database\Database();
+            $categoriesQuery = "SELECT * FROM categories";
+            $categoriesDb->query($categoriesQuery);
+            $categoriesResult = $categoriesDb->resultSet();
+            foreach ($categoriesResult as $row) {
+                echo  '<option value="'.$row['cat_id'].'">'.$row["category"].'</option>';
+            }
+
+            ?>
+        </select>
+    </div>
+    <div class="col-2">
+        <p class="fw-bold mt-2">Select Product Stock Size</p>
+        <select name="AddProductSize" id="AddProductSize" class="form-control">
+            <option value="0" class="form-control">SIZE</option>
+            <?php
+            $db = new \database\Database();
+            $query = "SELECT * FROM size";
+            $db->query($query);
+            $result = $db->resultSet();
+            foreach ($result as $row) {
+                ?>
+                <option value="<?= $row['size_iid'] ?>"><?= $row['size'] ?></option>
+                <?php
+            }
+
+            ?>
+
+        </select>
+    </div>
+    <div class="col-2">
+        <p class="fw-bold mt-2">Price From</p>
+        <input type="number" placeholder="price from" class="form-control" id="priceFrom">
+    </div>
+    <div class="col-2">
+        <p class="fw-bold mt-2">Price To</p>
+        <input type="number" placeholder="price To" class="form-control" id="priceTo">
     </div>
     <div class="col-3">
-        <div class="btn btn-dark">
-            <i class="bi bi-search"></i>
+        <div class="btn btn-dark mt-2" onclick="adminSearchProduct()">
+            <i class="bi bi-search" ></i>
+        </div>
+        <div class="btn btn-danger mt-2" onclick="location.href='admin-panel.php?panelID=1'">
+            CLEAR
         </div>
     </div>
+
 </div>
 
 <!--                    table-->
@@ -44,9 +93,14 @@ ob_start(); // Start output buffering
             <div class="col-2 d-flex justify-content-center align-items-center ">Actions</div>
         </div>
     </div>
+
     <!--                        table body-->
+    <div class="col-12" id="productTableBody">
+        <div class="row" >
+
+
     <?php
-    require_once "../database/database.php";
+
     $db = new database\Database();
     $query = "SELECT * FROM product";
     $db->query($query);
@@ -119,6 +173,8 @@ ob_start(); // Start output buffering
         <?php
     }
     ?>
+        </div>
+    </div>
 </div>
 
 <?php

@@ -150,6 +150,16 @@ const showSuccessToast = (title, body) => {
 const showAdminPanelLoadingSpinner = () => {
     document.getElementById("adminCenter").innerHTML = "<div class='spinner'> </div>"
 }
+function updatePanelID(newPanelID) {
+    // Get the current URL
+    const url = new URL(window.location.href);
+
+    // Update the panelID parameter
+    url.searchParams.set('panelID', newPanelID);
+
+    // Use history.pushState to update the URL without refreshing
+    window.history.pushState({}, '', url);
+}
 const loadAdminPages = (id) => {
 
     const request = new XMLHttpRequest();
@@ -160,7 +170,7 @@ const loadAdminPages = (id) => {
             const responseObj = JSON.parse(request.responseText);
             console.log(responseObj)
             if (responseObj.statusCode === 1) {
-
+                updatePanelID(id)
                 document.getElementById("adminCenter").innerHTML = responseObj.body;
 
                 if(id == 0){
@@ -1067,4 +1077,69 @@ const loadOrderProcessModelData = (id) => {
         }
     }
     request.send()
+}
+
+
+
+const adminSearchProduct =()=>{
+
+        let keyword = document.getElementById('keyword').value.trim();
+        let category = document.getElementById('categoryOption').value;
+        let size = document.getElementById('AddProductSize').value;
+        let priceFrom = document.getElementById('priceFrom').value.trim();
+        let priceTo = document.getElementById('priceTo').value.trim();
+
+        if (keyword === null) {
+            keyword = "";
+        }
+
+        if (category === null) {
+            category = 0;
+        }
+
+        if (size === null) {
+            size = 0
+        }
+
+        if (priceFrom === '' || isNaN(priceFrom)) {
+            priceFrom = 0;
+        }
+        if (Number(priceFrom) < 0) {
+            showErrorToast('Validation Error', 'Please enter a valid price from');
+            return;
+        }
+
+        if (priceTo === '' || isNaN(priceTo)) {
+            priceTo = 0;
+        }
+        if (Number(priceTo) < 0) {
+            showErrorToast('Validation Error', 'Please enter a valid price to');
+            return;
+        }
+
+        if (Number(priceFrom) > Number(priceTo)) {
+            showErrorToast('Validation Error', 'Price from cannot be greater than price to');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('keyword', keyword);
+        formData.append('category', category);
+        formData.append('size', size);
+        formData.append('priceFrom', priceFrom);
+        formData.append('priceTo', priceTo);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'process/adminsearchproduct.php', true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                showSuccessToast('Success', 'Products fetched successfully');
+                console.log(xhr.responseText);
+                document.getElementById('productTableBody').innerHTML = xhr.responseText;
+            } else {
+                showErrorToast('Error', 'An error occurred while searching for products');
+            }
+        };
+        xhr.send(formData);
+
 }

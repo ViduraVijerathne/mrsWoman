@@ -91,7 +91,7 @@ WHERE o.user_email = :email ";
         $details = "email : " . $order['user_email'] . "</br>";
         $details .= "address : " . $order['shipping_address'] . "</br>";
         $details .= "postalCode : " . $order['postal_code'] . "</br>";
-
+        $productID = 0;
         ?>
 
         <div class="col-12 text-center bg-white mt-2 border-bottom  fw-bold rounded  ">
@@ -111,6 +111,7 @@ WHERE o.user_email = :email ";
                 $stocks = $db->resultSet();
                 $leastOrderStatus = getOrderLeastStatus($orderID);
                 foreach ($stocks as $stock) {
+                    $productID = $stock['product_product_id'];
 
                     ?>
                     <div class="row border-bottom pb-1">
@@ -146,6 +147,9 @@ WHERE o.user_email = :email ";
                     <div class="row m-1">
                         <button type="button" onclick="loadOrderProcessModelData('<?php echo $orderID?>')" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#myModal">View
                             Process
+                        </button>
+                        <button type="button" onclick="location.href = 'singleProduct.php?pid=<?php echo $productID ?>'" class="btn btn-outline-dark mt-2" >View
+                             Product
                         </button>
 <!--                        <div id="orderActions_"-->
 <!--                             onclick="activateDeactivateProduct( )"-->

@@ -9,7 +9,7 @@ if(isAdmin()){
     if(isset($_SESSION['admin_name'])){
         $adminName = $_SESSION['admin_name'];
     }
-
+$defaultPanelID = isset($_GET['panelID']) ? $_GET['panelID'] :0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@ if(isAdmin()){
     <title><?php echo $PAGE_NAME . " " . $APP_NAME ?></title>
 </head>
 
-<body class="overflow-hidden" onload="navigationAdminPanel('0')">
+<body class="overflow-hidden" onload="navigationAdminPanel('<?php echo  $defaultPanelID?>')">
 <!--<body class="overflow-hidden">-->
 
 <div class="container-fluid">

@@ -1143,3 +1143,37 @@ const adminSearchProduct =()=>{
         xhr.send(formData);
 
 }
+
+const adminSearchDeleveredOrders =()=>{
+// Get the search parameters
+    const orderID = document.getElementById('orderID').value;
+    const productID = document.getElementById('productID').value;
+    const email = document.getElementById('email').value;
+
+    const form = new FormData();
+    form.append("orderID",orderID);
+    form.append("productID",productID);
+    form.append("email",email);
+
+    // Create an XMLHttpRequest object
+    const xhttp = new XMLHttpRequest();
+
+    // Define what happens on successful data submission
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            const response = JSON.parse(this.responseText);
+            if (response.statusCode === 1) {
+                document.getElementById('tablebody').innerHTML = response.body;
+            } else {
+                alert('Error: ' + response.message);
+            }
+        }
+    };
+
+    // Define the request
+    xhttp.open("POST", "process/adminSearchDeleveredOrder.php", true);
+
+    // Send the request with the search parameters
+    xhttp.send(form);
+}

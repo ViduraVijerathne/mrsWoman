@@ -27,12 +27,21 @@ if (isAdmin()) {
     ?>
     <h1>Delivered Orders</h1>
     <div class="row ">
-        <div class="col-6 offset-3">
-            <input class="form-control" type="text">
+        <div class="col-2">
+            <input class="form-control" type="text" placeholder="OrderID" id="orderID">
+        </div>
+        <div class="col-2">
+            <input class="form-control" type="text" placeholder="productID" id="productID">
+        </div>
+        <div class="col-2">
+            <input class="form-control" type="text" placeholder="customer Email" id="email">
         </div>
         <div class="col-3">
-            <div class="btn btn-dark">
+            <div class="btn btn-dark" onclick="adminSearchDeleveredOrders()">
                 <i class="bi bi-search"></i>
+            </div>
+            <div class="btn btn-danger " onclick="location.href='admin-panel.php?panelID=3'">
+                CLEAR
             </div>
         </div>
     </div>
@@ -63,6 +72,10 @@ if (isAdmin()) {
         </div>
     </div>
     <!--                        table body-->
+    <div class="col-12"  >
+        <div class="row" id="tablebody">
+
+
     <?php
     $db = new database\Database();
     $query = "SELECT * FROM order_status  INNER JOIN `order` ON `order`.order_id = order_status.order_order_id WHERE order_status.`status` = 'PLACE_ORDER'";
@@ -138,32 +151,40 @@ if (isAdmin()) {
             </div>
         </div>
 
-        </div>
 
-        <!-- The Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="orderProcessModelID">Modal Title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <section class="py-5 ps-5">
-                            <ul class="timeline-with-icons" id="processModelTimeline">
-                            </ul>
-                        </section>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <?php
     }
 
+    ?>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderProcessModelID">Modal Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <section class="py-5 ps-5">
+                        <ul class="timeline-with-icons" id="processModelTimeline">
+                        </ul>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <?php
     $obj->body .= ob_get_clean();
 
 } else {

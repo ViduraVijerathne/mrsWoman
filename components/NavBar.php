@@ -16,7 +16,7 @@ if(isset($_GET['keyWords'])){
         <div class="col-12">
             <nav class="navbar navbar-expand-lg bg-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#"><img src="./src/logo.png" alt="logo" class="rounded mx-2 me-1 img-thumbnail bg-light border-0 d-none d-lg-block" style="height: 50px;"></a>
+                    <a class="navbar-brand" href="/"><img src="./src/logo.png" alt="logo" class="rounded mx-2 me-1 img-thumbnail bg-light border-0 d-none d-lg-block" style="height: 50px;"></a>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>

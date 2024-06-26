@@ -65,6 +65,20 @@ function checkEmailIsExist($email){
     }
 }
 
+function  checkMobileIsExist($mobile)
+{
+    $db = new \database\Database();
+    $sql = "SELECT * FROM user WHERE mobile = :mobile";
+    $db->query($sql);
+    $db->bind(":mobile", $mobile);
+    $result = $db->resultSet();
+    if (count($result) > 0) {
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function validateMobile($mobile){
 // Check if mobile number contains only numeric characters
     if (!ctype_digit($mobile)) {
@@ -126,6 +140,10 @@ if(!isset($_POST['email'])){
 }else if(checkEmailIsExist($_POST['email'])){
     $obj->message = "email is already exist";
     $obj->statusCode = $ERROR;
+}else if(checkMobileIsExist( $_POST['mobile'])){
+    $obj->message = "mobile is already exist";
+    $obj->statusCode = $ERROR;
+    
 }
 else{
     $name = $_POST['name'];

@@ -719,6 +719,116 @@ const vcUser = () => {
     xmlHttpRequest.send(form);
 }
 
+const forgotPasswordSendVerificationEmail =()=>{
+    const email = document.getElementById("e3").value;
+    // Simple email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        showErrorToast("Error",'Please enter a valid email address.');
+        return;
+    }
+    document.getElementById('spinner_forgotPassword').classList.remove('d-none');
+    const form = new FormData();
+    form.append('email', email);
+    form.append('step',"1");
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+            document.getElementById('spinner_forgotPassword').classList.add('d-none');
+
+            const obj = JSON.parse(xhr.responseText);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
+                document.getElementById("e3").classList.add("d-none");
+
+                document.getElementById("recoverID").classList.remove('d-none');
+                document.getElementById("verificationInput").classList.remove('d-none');
+                document.getElementById("sendEmail").classList.add('d-none')
+            } else {
+                showErrorToast("OOPs!", obj.message);
+            }
+        }
+    };
+
+    xhr.open('POST', 'process/forgotPassword.php', true);
+    xhr.send(form);
+    // forgotPassword.php
+}
+
+const  forgotPasswordChangePassword = ()=>{
+    const  newPassword = document.getElementById("np").value;
+    if (newPassword.length < 5 || newPassword.length > 12) {
+        showErrorToast("Error",'Password must be between 5 and 12 characters.');
+        return;
+    }
+
+
+    document.getElementById('spinner_forgotPassword').classList.remove('d-none');
+    const form = new FormData();
+    form.append('password', newPassword);
+    form.append('step',"3");
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+            document.getElementById('spinner_forgotPassword').classList.add('d-none');
+
+            const obj = JSON.parse(xhr.responseText);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
+                hideViewComponent('frogot','signin')
+                // document.getElementById("npContainer").classList.remove('d-none')
+                // document.getElementById("cpasswordContainer").classList.remove("d-none");
+                //
+                // document.getElementById("recoverID").classList.add('d-none');
+                // document.getElementById("verificationInput").classList.add('d-none');
+            } else {
+                showErrorToast("OOPs!", obj.message);
+            }
+        }
+    };
+
+    xhr.open('POST', 'process/forgotPassword.php', true);
+    xhr.send(form);
+
+}
+const forgotPasswordVerifyEmail= ()=>{
+   const  vc = document.getElementById('verificationCode').value;
+    if (!vc) {
+        showErrorToast("Error",'Please enter the verification code.');
+        return;
+    }
+
+
+    document.getElementById('spinner_forgotPassword').classList.remove('d-none');
+    const form = new FormData();
+    form.append('vc', vc);
+    form.append('step',"2");
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+            document.getElementById('spinner_forgotPassword').classList.add('d-none');
+
+            const obj = JSON.parse(xhr.responseText);
+            if (obj.statusCode === 1) {
+                showSuccessToast('Success!', obj.message);
+                document.getElementById("npContainer").classList.remove('d-none')
+                document.getElementById("cpasswordContainer").classList.remove("d-none");
+
+                document.getElementById("recoverID").classList.add('d-none');
+                document.getElementById("verificationInput").classList.add('d-none');
+            } else {
+                showErrorToast("OOPs!", obj.message);
+            }
+        }
+    };
+
+    xhr.open('POST', 'process/forgotPassword.php', true);
+    xhr.send(form);
+}
 const signin = () => {
 
     const email = document.getElementById('e2').value;

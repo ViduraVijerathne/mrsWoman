@@ -122,6 +122,7 @@ if(!isset($_POST['email'])){
     $obj->message = "please enter a valid mobile number";
     $obj->statusCode = $ERROR;
 
+
 }else if(checkEmailIsExist($_POST['email'])){
     $obj->message = "email is already exist";
     $obj->statusCode = $ERROR;
@@ -135,8 +136,8 @@ else{
     if(signup($email,$password,$name,$mobile,$vc)){
         $obj->message = "Successfully registered";
         session_start();
-        $_SESSION['user_email'] = $email;
-        $_SESSION['user_password'] = $password;
+        $_SESSION['unverified_user_email'] = $email;
+        $_SESSION['unverified_user_password'] = $password;
         $obj->statusCode = $SUCCESS;
     }else{
         $obj->message = "Something went wrong";

@@ -669,6 +669,7 @@ const signupUser = () => {
     xmlHTTPRequest.onreadystatechange = function () {
         if (xmlHTTPRequest.readyState === 4 && xmlHTTPRequest.status === 200) {
             const obj = JSON.parse(xmlHTTPRequest.responseText);
+            console.log(obj)
             if (obj.statusCode === 1) {
                 showSuccessToast('Success!', obj.message);
                 hideViewComponent('signup', 'VCcontainer')
@@ -693,10 +694,11 @@ const vcUser = () => {
     document.getElementById('spinner_VC').classList.remove('d-none');
     const form = new FormData();
     form.append('vc', vc);
-
+    alert(vc)
     const xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.onreadystatechange = async function () {
         if (xmlHttpRequest.readyState === 4 && xmlHttpRequest.status === 200) {
+            console.log(xmlHttpRequest.responseText)
             const obj = JSON.parse(xmlHttpRequest.responseText);
             if (obj.statusCode === 1) {
                 showSuccessToast('Success!', obj.message);
@@ -736,13 +738,12 @@ const signin = () => {
             if (obj.statusCode === 1) {
                 showSuccessToast('Success!', obj.message);
                 window.location.href = "index.php";
+            }if(obj.statusCode === 2){
+                showErrorToast("OOPs!", obj.message);
+                hideViewComponent('signin', 'VCcontainer')
             } else {
-                if (obj.message === "Your account is not verified") {
                     showErrorToast("OOPs!", obj.message);
-                    hideViewComponent('signin', 'VCcontainer')
-                } else {
-                    showErrorToast("OOPs!", obj.message);
-                }
+
             }
         }
     }

@@ -1,9 +1,10 @@
 <?php
-global $SUCCESS;
+global $SUCCESS, $NOT_VERIFIED;
 global $ERROR;
 require_once "../const/statesCodes.php";
 require_once "../database/Database.php";
 $obj = new stdClass();
+session_start();
 function sendVC($email) {
     // Generate a random number within the specified range
     $min = 100000;
@@ -44,18 +45,20 @@ if(!isset($_POST['email'])){
     if(count($results) > 0){
         $user = $results[0];
         if($user['is_verified'] == 0){
-            $obj->message = "Your account is not verified";
-            $obj->statusCode = $ERROR;
+            $_SESSION['unverified_user_email'] = $user['email'];
+            $_SESSION['unverified_user_password'] = $user['password'];
+            $obj->message = "Your account is not verified" .$_SESSION['unverified_user_email'];
+            $obj->statusCode = $NOT_VERIFIED;
             sendVC($email);
 
 
         }else{
-            session_start();
+
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_password'] = $user['password'];
             $_SESSION['user_mobile'] = $user['mobile'];
             $_SESSION['user_name'] = $user['name'];
-
+            $_SESSION['is_verified'] = $user['is_verified'];
             if($rememberMe == "true"){
                 setcookie("user_email", $user['email'], time() + (86400 * 30), "/");
                 setcookie("user_password", $user['password'], time() + (86400 * 30), "/");

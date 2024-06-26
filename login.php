@@ -121,7 +121,7 @@ $PAGE_NAME = "Login";
 
 
                 <!-- Sign Up -->
-                <div class="col-12 col-lg-6 mt-5" id="signup">
+                <div class="col-12 col-lg-6 mt-5 d-none" id="signup">
                     <div class="row mt-5">
                         <div class="col-4 offset-4">
                             <img src="../../src/logo.png" class="img-fluid" alt="" srcset="">
@@ -317,9 +317,9 @@ $PAGE_NAME = "Login";
                     </div>
 
                     <div class="row mt-4 text-center " style="cursor:pointer;">
-                        <div class="col-12 text-center">
-                            <span class="text-capitalize fw-bold border border-dark p-2 " onclick="hideViewComponent('signin','signup')">don't have already account? <span>Sign up</span></span>
-                        </div>
+<!--                        <div class="col-12 text-center">-->
+<!--                            <span class="text-capitalize fw-bold border border-dark p-2 " onclick="hideViewComponent('signin','signup')">don't have already account? <span>Sign up</span></span>-->
+<!--                        </div>-->
 
 
                     </div>

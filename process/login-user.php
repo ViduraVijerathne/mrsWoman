@@ -35,11 +35,13 @@ function validatePassword($password) {
     // If all checks pass, return true
     return true;
 }
-function sendVC() {
+function sendVC($email) {
     // Generate a random number within the specified range
     $min = 100000;
     $max = 999999;
-    return mt_rand($min, $max);
+    $code  = mt_rand($min, $max);
+//    sendEmail("your ms.woman verification code $code","Account verification ",$email);
+    return $code;
 }
 function validateName($name){
     // Check if password length is between 3 and 12 characters

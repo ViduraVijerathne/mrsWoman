@@ -279,7 +279,7 @@ function productItemComponent($p)
                                     array_push($sizes,$stock['size_iid']);
                                 ?>
                                 <button onclick="SelecteProductChangeSize('<?php echo  $pId?>','<?php echo $stock['size_iid']?>')" id="size_<?php echo  $pId.'_'.$stock['size_iid']?>"
-                                        class="btn  col-1 ms-3 fw-bold text-uppercase btn-outline-dark sizebtn_<?php echo  $pId?> "><?php echo $stock['size'];?>
+                                        class="btn   col-12 col-lg-1 mt-lg-0 mt-1  ms-3 fw-bold text-uppercase btn-outline-dark sizebtn_<?php echo  $pId?> "><?php echo $stock['size'];?>
                                 </button>
 
                                 <?php

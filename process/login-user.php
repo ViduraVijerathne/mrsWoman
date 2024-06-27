@@ -65,6 +65,20 @@ function checkEmailIsExist($email){
     }
 }
 
+function  checkMobileIsExist($mobile)
+{
+    $db = new \database\Database();
+    $sql = "SELECT * FROM user WHERE mobile = :mobile";
+    $db->query($sql);
+    $db->bind(":mobile", $mobile);
+    $result = $db->resultSet();
+    if (count($result) > 0) {
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function validateMobile($mobile){
 // Check if mobile number contains only numeric characters
     if (!ctype_digit($mobile)) {
@@ -122,9 +136,14 @@ if(!isset($_POST['email'])){
     $obj->message = "please enter a valid mobile number";
     $obj->statusCode = $ERROR;
 
+
 }else if(checkEmailIsExist($_POST['email'])){
     $obj->message = "email is already exist";
     $obj->statusCode = $ERROR;
+}else if(checkMobileIsExist( $_POST['mobile'])){
+    $obj->message = "mobile is already exist";
+    $obj->statusCode = $ERROR;
+    
 }
 else{
     $name = $_POST['name'];
@@ -135,8 +154,8 @@ else{
     if(signup($email,$password,$name,$mobile,$vc)){
         $obj->message = "Successfully registered";
         session_start();
-        $_SESSION['user_email'] = $email;
-        $_SESSION['user_password'] = $password;
+        $_SESSION['unverified_user_email'] = $email;
+        $_SESSION['unverified_user_password'] = $password;
         $obj->statusCode = $SUCCESS;
     }else{
         $obj->message = "Something went wrong";

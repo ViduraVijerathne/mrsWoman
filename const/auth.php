@@ -17,8 +17,9 @@ function isUser(){
         session_start();
     }
 
-    if(isset($_SESSION['user_email']) && $_SESSION['user_password']){
-        return true;
+    if(isset($_SESSION['user_email']) && $_SESSION['user_password'] && $_SESSION['is_verified']){
+
+        return ($_SESSION['is_verified'] == 1);
     }else{
         return  false;
     }

@@ -121,7 +121,7 @@ $PAGE_NAME = "Login";
 
 
                 <!-- Sign Up -->
-                <div class="col-12 col-lg-6 mt-5" id="signup">
+                <div class="col-12 col-lg-6 mt-5 d-none" id="signup">
                     <div class="row mt-5">
                         <div class="col-4 offset-4">
                             <img src="../../src/logo.png" class="img-fluid" alt="" srcset="">
@@ -204,7 +204,7 @@ $PAGE_NAME = "Login";
                         </div>
                     </div>
 
-                    <div class="row d-none" id="spinner_signin">
+                    <div class="row d-none" id="spinner_forgotPassword">
                         <div class="col-12 d-flex justify-content-center align-items-center">
                             <div class="spinner-border text-center" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -226,16 +226,16 @@ $PAGE_NAME = "Login";
                         </div>
                     </div>
 
-<!--                    <div class="row mt-3 d-none" id="verificationInput">-->
-<!--                        <div class="col-12 col-lg-6 offset-lg-3">-->
-<!--                            <input type="text" placeholder="Verification Code" class="form-control" id="verificationCode" value="">-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="row mt-3 d-none" id="verificationInput">
+                        <div class="col-12 col-lg-6 offset-lg-3">
+                            <input type="text" placeholder="Verification Code" class="form-control" id="verificationCode" value="">
+                        </div>
+                    </div>
 
 
                     <div class="row mt-3 d-none" id="cpasswordContainer">
                         <div class="col-12 col-lg-4 offset-lg-4 d-grid">
-                            <button class="btn btn-dark fw-bold" onclick="changeRecoverPassword()">Change Password</button>
+                            <button class="btn btn-dark fw-bold" onclick="forgotPasswordChangePassword()">Change Password</button>
                         </div>
                     </div>
 
@@ -243,13 +243,13 @@ $PAGE_NAME = "Login";
 
                     <div class="row mt-3 d-none" id="recoverID">
                         <div class="col-12 col-lg-4 offset-lg-4 d-grid">
-                            <button class="btn btn-dark fw-bold" onclick="verifyUserEmailCode()">Recover</button>
+                            <button class="btn btn-dark fw-bold" onclick="forgotPasswordVerifyEmail()">Recover</button>
                         </div>
                     </div>
 
                     <div class="row mt-3">
                         <div class="col-12 col-lg-4 offset-lg-4 d-grid" id="sendEmail">
-                            <button class="btn btn-dark fw-bold" onclick="sendVerificationEmail()">Send Verification Email</button>
+                            <button class="btn btn-dark fw-bold" onclick="forgotPasswordSendVerificationEmail()">Send Verification Email</button>
                         </div>
                     </div>
 
@@ -317,9 +317,9 @@ $PAGE_NAME = "Login";
                     </div>
 
                     <div class="row mt-4 text-center " style="cursor:pointer;">
-                        <div class="col-12 text-center">
-                            <span class="text-capitalize fw-bold border border-dark p-2 " onclick="hideViewComponent('signin','signup')">don't have already account? <span>Sign up</span></span>
-                        </div>
+<!--                        <div class="col-12 text-center">-->
+<!--                            <span class="text-capitalize fw-bold border border-dark p-2 " onclick="hideViewComponent('signin','signup')">don't have already account? <span>Sign up</span></span>-->
+<!--                        </div>-->
 
 
                     </div>

@@ -30,11 +30,13 @@ function activateUser($email){
     $db->execute();
     return true;
 }
-if(!isset($_SESSION['user_email'])){
-    $obj->message = "Invalid Request";
+
+
+if(!isset($_SESSION['unverified_user_email'])){
+    $obj->message = "Invalid Request not setted email";
     $obj->statusCode = $ERROR;
-}else if(!isset($_SESSION['user_password'])){
-    $obj->message = "Invalid Request";
+}else if(!isset($_SESSION['unverified_user_password'])){
+    $obj->message = "Invalid Request not setted  password";
     $obj->statusCode = $ERROR;
 }else if(!isset($_POST['vc'])){
     $obj->message = "Please Enter Verification Code";
@@ -42,8 +44,8 @@ if(!isset($_SESSION['user_email'])){
 
 
 }else{
-    $email = $_SESSION['user_email'];
-    $password = $_SESSION['user_password'];
+    $email = $_SESSION['unverified_user_email'];
+    $password = $_SESSION['unverified_user_password'];
     $vc = $_POST['vc'];
     if(!userIsExist($email,$password,$vc)){
         $obj->message = "Invalid Verification Code";
